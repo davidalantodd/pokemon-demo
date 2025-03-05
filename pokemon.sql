@@ -97,3 +97,39 @@ SELECT pokemon.name, type, decks.title
 FROM pokemon
 INNER JOIN decks
 ON pokemon.deck_id = decks.id;
+
+-- another example for joins
+
+CREATE TABLE IF NOT EXISTS trainers(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    pokemon_id INTEGER REFERENCES pokemon(id)
+);
+
+INSERT INTO trainers (name, pokemon_id)
+VALUES
+    ('David', 1),
+    ('Damien', 2),
+    ('Phong', 3),
+    ('Dustin', null)
+;
+
+SELECT * FROM trainers;
+
+-- LEFT JOIN
+SELECT trainers.name, pokemon.name, pokemon.type
+FROM trainers
+LEFT JOIN pokemon
+ON trainers.pokemon_id = pokemon.id;
+
+-- INNER JOIN
+SELECT trainers.name, pokemon.name, pokemon.type
+FROM trainers
+INNER JOIN pokemon
+ON trainers.pokemon_id = pokemon.id;
+
+-- JOIN (defaults to INNER JOIN)
+SELECT trainers.name, pokemon.name, pokemon.type
+FROM trainers
+JOIN pokemon
+ON trainers.pokemon_id = pokemon.id;
