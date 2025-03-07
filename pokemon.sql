@@ -133,3 +133,42 @@ SELECT trainers.name, pokemon.name, pokemon.type
 FROM trainers
 JOIN pokemon
 ON trainers.pokemon_id = pokemon.id;
+
+-- MANY TO MANY RELATIONSHIP
+
+-- Create the badges table
+CREATE TABLE IF NOT EXISTS badges (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+-- Insert some badges
+INSERT INTO badges (name)
+VALUES
+    ('Boulder Badge'),
+    ('Cascade Badge'),
+    ('Thunder Badge')
+;
+
+-- Create trainer_badges join table
+CREATE TABLE IF NOT EXISTS trainer_badges (
+    trainer_id INTEGER REFERENCES trainers(id),
+    badge_id INTEGER REFERENCES badges(id),
+    PRIMARY KEY (trainer_id, badge_id)
+);
+
+-- Insert trainer_badges relationships
+INSERT INTO trainer_badges (trainer_id, badge_id)
+VALUES
+    (1, 1), -- David earns Boulder Badge
+    (1, 2), -- David earns Cascade Badge
+    (2, 3), -- Damien earns Thunder Badge
+    (3, 1)  -- Phong earns Boulder Badge
+;
+
+-- Query to demonstrate the many-to-many relationship
+SELECT trainers.name AS trainer_name, badges.name AS badge_name
+FROM trainers
+JOIN trainer_badges ON trainers.id = trainer_badges.trainer_id
+JOIN badges ON trainer_badges.badge_id = badges.id;
+
